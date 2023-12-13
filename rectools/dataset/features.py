@@ -339,6 +339,10 @@ class SparseFeatures:
         """
         required_columns = {id_col, feature_col, value_col}
         actual_columns = set(df.columns)
+        # ??question: Would changing condition of the if statement
+        # from not actual_columns >= required_columns to
+        # actual_columns < required_columns change the outcome?
+        # question??
         if not actual_columns >= required_columns:
             raise KeyError(f"Missed columns {required_columns - actual_columns}")
 

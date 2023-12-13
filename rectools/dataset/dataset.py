@@ -139,6 +139,10 @@ class Dataset:
         possible_id_col: str,
         feature_type: str,
     ) -> tp.Optional[Features]:
+        # ??question: What is a benefit of checking df for being None
+        # inside of _make_features instead of performing the check beforehand
+        # and only passing the actual dataframe to the method?
+        # question??
         if df is None:
             return None
 
@@ -155,6 +159,9 @@ class Dataset:
                     "When using dense features all ids from interactions must present in features table"
                 )
             except Exception as e:  # pragma: no cover
+                # ??question: What is the !r syntax in string interpolation in
+                # RuntimeError(f"An error has occurred while constructing {feature_type} features: {e!r}")?
+                # question??
                 raise RuntimeError(f"An error has occurred while constructing {feature_type} features: {e!r}")
         try:
             return SparseFeatures.from_flatten(df, id_map, cat_features, id_col=id_col)
@@ -186,5 +193,9 @@ class Dataset:
             Resized user-item CSR matrix
         """
         matrix = self.interactions.get_user_item_matrix(include_weights)
+        # ??question: Wouldn't a call to self.user_id_map.size be equivalent to
+        # self.user_id_map.internal_ids.size since the number of internal and external
+        # ids should be equal in the mapping?
+        # question??
         matrix.resize(self.user_id_map.internal_ids.size, self.item_id_map.internal_ids.size)
         return matrix

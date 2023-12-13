@@ -81,6 +81,9 @@ class IdMap:
         internal_ids_sorted = internal_ids[order]
 
         internals_incorrect = internal_ids_sorted != np.arange(internal_ids_sorted.size)
+        # ??question: Since internals_incorrect receive value of inequality comparison
+        # != with a numpy's ndarray, is it ever possible for internals_incorrect to be True?
+        # question??
         if internals_incorrect is True or internals_incorrect.any():
             raise ValueError("Internal ids must be integers from 0 to n_objects-1")
 
