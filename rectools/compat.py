@@ -22,6 +22,10 @@ class RequirementUnavailable:
 
     def __new__(cls, *args: tp.Any, **kwargs: tp.Any) -> tp.Any:
         """Raise ImportError when an attempt to instantiate an unavailable model is made"""
+        # ??question: How will the string interpolation behave with {cls.requirement} if it is
+        # instantiated to NotImplemented, for example when someone tries to instanciate the
+        # RequirementUnavailable class?
+        # question??
         raise ImportError(
             f"Requirement `{cls.requirement}` is not satisfied. Run `pip install rectools[{cls.requirement}]` "
             f"to install extra requirements before accessing {cls.__name__}."

@@ -87,6 +87,9 @@ def recommend_from_scores(
     if sorted_blacklist is not None:
         if sorted_whitelist is None:
             sorted_whitelist = np.arange(scores.size)
+        # ??question: what is the meaning of tilda ~ in
+        # ~fast_isin_for_sorted_test_elements(sorted_whitelist, sorted_blacklist)?
+        # question??
         items_to_recommend = sorted_whitelist[~fast_isin_for_sorted_test_elements(sorted_whitelist, sorted_blacklist)]
     elif sorted_whitelist is not None:
         items_to_recommend = sorted_whitelist

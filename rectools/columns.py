@@ -16,6 +16,10 @@
 
 
 class Columns:
+    # ??question: the comment of the Columns class mentions fixed names for specific tables,
+    # however the Columns class does not contain any name field,
+    # what is the meaning of the comment?
+    # question??
     """Fixed column names for tables that contain interactions and recommendations."""
 
     User = "user_id"

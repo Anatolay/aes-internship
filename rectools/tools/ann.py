@@ -143,6 +143,9 @@ class BaseNmslibRecommender:
         nmslib.setQueryTimeParams(self.index, self.index_query_time_params)
 
     @staticmethod
+    # ??question: Which of _truncate_item_list is the whitelist
+    # mentioned in its doc string?
+    # question??
     def _truncate_item_list(
         top_n: int,
         item_arrays: tp.Sequence[InternalIds],

@@ -92,12 +92,20 @@ class RandomModel(ModelBase):
 
             n_reco = min(n_reco, item_ids.size)
 
+            # ??question: Aren't these two equivalent:
+            # reco_ids = item_ids[random.sample(item_indices, n_reco)]
+            # and
+            # reco_ids = np.random.choice(item_ids, n_reco, replace=False)?
+            # question??
             if n_reco / item_ids.size < K_TO_N_MIN_NUMPY_RATIO:
                 reco_indices = random.sample(item_indices, n_reco)
                 reco_ids = item_ids[reco_indices]
             else:
                 reco_ids = np.random.choice(item_ids, n_reco, replace=False)
 
+            # ??question: Why are viewed ids filtered out after selecting reco_ids
+            # and not beforehand?
+            # question??
             if filter_viewed:
                 reco_ids = reco_ids[fast_isin_for_sorted_test_elements(reco_ids, viewed_ids, invert=True)][:k]
 

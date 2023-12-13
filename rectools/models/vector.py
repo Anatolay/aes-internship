@@ -33,6 +33,9 @@ class Distance(Enum):
 
     DOT = 1  # Bigger value means closer vectors
     COSINE = 2  # Bigger value means closer vectors
+    # ??question: Which models in this repository do use EUCLIDEAN distance
+    # from the Distance Enum?
+    # question??
     EUCLIDEAN = 3  # Smaller value means closer vectors
 
 
@@ -77,6 +80,8 @@ class ImplicitRanker:
 
     @staticmethod
     def _calc_dots(factors: np.ndarray) -> np.ndarray:
+        # ??question: Why does _calc_dots sum along axis 1?
+        # question??
         return (factors**2).sum(axis=1)
 
     @staticmethod
@@ -94,6 +99,9 @@ class ImplicitRanker:
         """
         num_masked = 0
         min_score = self._get_neginf_score()
+        # ??question: why does the for loop in _get_mask_for_correct_scores method
+        # only check elements at the end of the scores ndarray?
+        # question??
         for el in np.flip(scores):
             if el <= min_score:
                 num_masked += 1
@@ -110,6 +118,9 @@ class ImplicitRanker:
         all_scores: tp.List[np.ndarray] = []
 
         for subject_id, object_ids, object_scores in zip(subject_ids, ids, scores):
+            # ??question: it seems that self._get_mask_for_correct_scores works correctly
+            # for sorted scores only, where is the guarantee that object_scores are sorted?
+            # question??
             correct_mask = self._get_mask_for_correct_scores(object_scores)
             relevant_scores = object_scores[correct_mask]
             relevant_ids = object_ids[correct_mask]
@@ -124,6 +135,8 @@ class ImplicitRanker:
                 # Theoretically d2 >= 0, but can be <0 because of rounding errors
                 relevant_scores = np.sqrt(np.maximum(d2, 0))
 
+            # ??question: Why is the same subject_id added several times to all_target_ids?
+            # question??
             all_target_ids.extend([subject_id for _ in range(len(relevant_ids))])
             all_reco_ids.append(relevant_ids)
             all_scores.append(relevant_scores)
@@ -165,6 +178,9 @@ class ImplicitRanker:
             subject_factors = np.hstack((-np.ones((subject_factors.shape[0], 1)), 2 * subject_factors))
             object_factors = np.hstack(((object_factors**2).sum(axis=1).reshape(-1, 1), object_factors))
 
+        # ??question: Why is user allowed to pass parameter k
+        # which can be smaller then the size of object_factors?
+        # question??
         real_k = min(k, object_factors.shape[0])
 
         ids, scores = implicit.cpu.topk.topk(  # pylint: disable=c-extension-no-member
@@ -209,6 +225,8 @@ class VectorModel(ModelBase):
         user_vectors, item_vectors = self._get_u2i_vectors(dataset)
 
         ranker = ImplicitRanker(self.u2i_dist, user_vectors, item_vectors)
+        # ??question: What does csr stand for in ui_csr_for_filter?
+        # question??
         ui_csr_for_filter = user_items[user_ids] if filter_viewed else None
         return ranker.rank(
             subject_ids=user_ids,

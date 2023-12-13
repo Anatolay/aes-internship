@@ -67,6 +67,10 @@ class LightFMWrapperModel(VectorModel):
     def _fit(self, dataset: Dataset) -> None:  # type: ignore
         self.model = deepcopy(self._model)
 
+        # ??question: Why is ui_coo matrix is in coo format,
+        # achieved via tocoo call,
+        # while most other models deal with csr format?
+        # question??
         ui_coo = dataset.get_user_item_matrix(include_weights=True).tocoo(copy=False)
         user_features = self._prepare_features(dataset.user_features)
         item_features = self._prepare_features(dataset.item_features)
@@ -143,6 +147,9 @@ class LightFMWrapperModel(VectorModel):
         item_embeddings = items.embeddings
 
         if add_biases:
+            # ??question: Why are user_biases and item_biases reshaped
+            # for user_embeddings and item_embeddings?
+            # question??
             user_biases: np.ndarray = users.biases  # type: ignore
             item_biases: np.ndarray = items.biases  # type: ignore
             user_embeddings = np.hstack((user_biases[:, np.newaxis], np.ones((user_biases.size, 1)), user_embeddings))
