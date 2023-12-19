@@ -375,6 +375,9 @@ class SparseFeatures:
         return cls.from_iterables(csr, names_all)
 
     @classmethod
+    # ??question: What is the difference between direct features from _make_direct_features
+    # and category features from _make_cat_feature?
+    # question??
     def _make_direct_features(
         cls,
         df: pd.DataFrame,
@@ -397,6 +400,9 @@ class SparseFeatures:
             ),
             shape=(n_objects, len(features)),
         )
+        # ??question: Does numpy package provide a more efficient map function
+        # then python's list comprehension used to define names?
+        # question??
         names = [(feature, DIRECT_FEATURE_VALUE) for feature in features_map.get_external_sorted_by_internal()]
         return csr, names
 
@@ -428,6 +434,9 @@ class SparseFeatures:
         """Return values in sparse format."""
         return self.values
 
+    # ??question: Why is the return type taken into quotes
+    # -> "SparseFeatures" instead of simply -> SparseFeatures?
+    # question??
     def take(self, ids: InternalIds) -> "SparseFeatures":
         """
         Take a subset of features for given subject (user or item) ids.

@@ -25,6 +25,9 @@ from rectools.utils import fast_isin, get_from_series_by_index
 
 
 @attr.s(frozen=True, slots=True)
+# ??question: How can I get an internal object id from an IdMap
+# if I have an external id?
+# question??
 class IdMap:
     """Mapping between external and internal object ids.
 

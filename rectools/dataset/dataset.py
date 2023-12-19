@@ -56,6 +56,8 @@ class Dataset:
     user_id_map: IdMap = attr.ib()
     item_id_map: IdMap = attr.ib()
     interactions: Interactions = attr.ib()
+    # ??question: Why are user_features and item_features allowed to be None?
+    # question??
     user_features: tp.Optional[Features] = attr.ib(default=None)
     item_features: tp.Optional[Features] = attr.ib(default=None)
 
