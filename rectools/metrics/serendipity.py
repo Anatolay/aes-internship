@@ -152,6 +152,8 @@ class Serendipity(MetricAtK):
             how="left",
             indicator=True,
         )
+        # ??question: what is the purpose of the "_merge" column in recommendations_ dataframe?
+        # question??
         recommendations_["is_relevant"] = np.where(recommendations_["_merge"] == "both", 1, 0)
 
         n_items = len(catalog)
@@ -326,6 +328,11 @@ def calc_serendipity_metrics(
     serendipity_metrics: tp.Dict[str, Serendipity] = select_by_type(metrics, Serendipity)
     if serendipity_metrics:
         k_max = max(metric.k for metric in serendipity_metrics.values())
+        # ??question: In Serendipity.fit, k_max is the upper bound on values taken into
+        # account when calculating the metric. However, in calc_serendipity_metrics
+        # k_max is the maximum value of k among allmetrics. If the same value is
+        # used for all serendipity metrics, shouldn't the minimal of metric.k be used?
+        # question??
         fitted = Serendipity.fit(reco, interactions, prev_interactions, catalog, k_max)
         for name, metric in serendipity_metrics.items():
             results[name] = metric.calc_from_fitted(fitted)

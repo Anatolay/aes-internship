@@ -118,6 +118,9 @@ class MeanInvUserFreq(MetricAtK):
         n_users_per_item = prev_interactions.groupby(Columns.Item)[Columns.User].nunique()
 
         recommendations_ = reco.loc[reco[Columns.Rank] <= k_max].copy()
+        # ??question: Why is n_users_per_item, which is not a function, passed to
+        # the .map method recommendations_[Columns.Item]?
+        # question??
         recommendations_["n_users_per_item"] = recommendations_[Columns.Item].map(n_users_per_item)
         # cold items are treated as if they were consumed by a single user
         recommendations_["n_users_per_item"] = recommendations_["n_users_per_item"].fillna(1)

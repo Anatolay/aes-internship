@@ -155,6 +155,9 @@ def calc_metrics(  # noqa  # pylint: disable=too-many-branches
         )
         results.update(serendipity_values)
 
+    # ??question: Does length of results always correspond to the number
+    # of non-custom metrics inthe metrics Dict?
+    # question??
     if len(results) < len(metrics):
         warnings.warn("Custom metrics are not supported.")
     return results

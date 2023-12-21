@@ -60,6 +60,9 @@ class MetricAtK:
             warnings.warn(f"Expected min value of '{Columns.Rank}' column in 'reco' dataframe to be equal to 1.")
 
     @staticmethod
+    # ??question: Is it possible for a df missing some of the required columns to pass
+    # the _check_columns check?
+    # question??
     def _check_columns(df: tp.Optional[pd.DataFrame], name: str, required_columns: tp.Iterable[str]) -> None:
         if df is None:
             return
