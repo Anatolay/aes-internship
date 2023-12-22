@@ -219,6 +219,8 @@ class MAP(_RankingMetric):
         n_relevant_items_at_k.data = full_cumsum - sum_n_elements_in_prev_rows
 
         # And finally calculate precision for every k
+        # ??question: Why are counts size greater than k_max by 1?
+        # question??
         counts = np.arange(k_max + 1)
         counts_indexed = counts[n_relevant_items_at_k.indices]
         prec_at_k = n_relevant_items_at_k
@@ -403,6 +405,8 @@ class NDCG(_RankingMetric):
         pd.Series
             Values of metric (index - user id, values - metric value for every user).
         """
+        # ??question: What do dcg, idcg and ndcg stand for?
+        # question??
         dcg = (merged[Columns.Rank] <= self.k).astype(int) / log_at_base(merged[Columns.Rank] + 1, self.log_base)
         idcg = (1 / log_at_base(np.arange(1, self.k + 1) + 1, self.log_base)).sum()
         ndcg = (

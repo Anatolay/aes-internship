@@ -96,6 +96,8 @@ class RandomSplitter(Splitter):
             raise ValueError("Value of test_fold_frac must be between 0 and 1")
 
         if test_fold_frac * n_splits > 1:
+            # ??question: What is the purpose of :.1% syntax used at test_fold_frac?
+            # question??
             raise ValueError(f"Impossible to create {n_splits} non-overlapping folds {test_fold_frac:.1%} each")
 
         super().__init__(filter_cold_users, filter_cold_items, filter_already_seen)

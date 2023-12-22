@@ -101,6 +101,8 @@ class TimeRangeSplitter(Splitter):
         filter_already_seen: bool = True,
     ) -> None:
         super().__init__(filter_cold_users, filter_cold_items, filter_already_seen)
+        # ??question: What does pattern passed to re.fullmatch mean?
+        # question??
         m = re.fullmatch(r"([1-9]\d*)([DH])", test_size)
         if not m:
             raise ValueError(r"Test size must match to `[1-9]\d*[DH]`, e.g. 1D, 4H")
