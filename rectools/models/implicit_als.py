@@ -121,6 +121,9 @@ def get_users_vectors(model: AnyAlternatingLeastSquares) -> np.ndarray:
     np.ndarray
        User vectors
     """
+    # ??question: Why is it required to call to_numpy() on user_factors for models
+    # which are instances of GPUAlternatingLeastSquares?
+    # question??
     if isinstance(model, GPUAlternatingLeastSquares):  # pragma: no cover
         return model.user_factors.to_numpy()
     return model.user_factors
@@ -197,6 +200,10 @@ def fit_als_with_features_separately_inplace(
     model.item_factors = item_factors
 
 
+# ??question: What is the purpose of the underscore _ at the
+# start of _fit_paired_factors function name if it is not a
+# class method?
+# question??
 def _fit_paired_factors(
     model: AnyAlternatingLeastSquares, xy_csr: sparse.csr_matrix, y_factors: np.ndarray
 ) -> np.ndarray:
@@ -374,6 +381,11 @@ def _fit_combined_factors_on_cpu_inplace(
     iu_csr = ui_csr.T.tocsr(copy=False)
 
     # invalidate cached norms and squared factors
+    # ??question: Does double assignment with = make both
+    # model._item_norms and model._user_norms into None
+    # or is it assigning value of model._user_norms to
+    # model._item_norms and None to model._user_norms?
+    # question??
     model._item_norms = model._user_norms = None  # pylint: disable=protected-access
     model._YtY = None  # pylint: disable=protected-access
     model._XtX = None  # pylint: disable=protected-access
@@ -412,6 +424,9 @@ def _fit_combined_factors_on_gpu_inplace(
     n_user_explicit_factors: int,
     n_item_explicit_factors: int,
     verbose: int,
+    # ??question: What is pragma comment the
+    # _fit_combined_factors_on_gpu_inplace return type?
+    # question??
 ) -> None:  # pragma: no cover
     n_factors = user_factors.shape[1]
     user_explicit_factors = user_factors[:, :n_user_explicit_factors].copy()

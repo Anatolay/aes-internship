@@ -60,6 +60,8 @@ def fast_2d_int_unique(arr: np.ndarray) -> tp.Tuple[np.ndarray, np.ndarray]:
     arr_dtype, arr_shape = arr.dtype, arr.shape
     consolidated = _consolidate_2d_int_array(arr)
     unq_consolidated, inv_ids = np.unique(consolidated, return_inverse=True)
+    # ??question: Does calling del on consolidated result in garbage collection?
+    # question??
     del consolidated
     unq_arr = unq_consolidated.view(arr_dtype).reshape(len(unq_consolidated), arr_shape[1])
     return unq_arr, inv_ids

@@ -23,7 +23,12 @@ import pandas as pd
 from rectools import ExternalId, ExternalIds, InternalId, InternalIds
 from rectools.utils import fast_isin, get_from_series_by_index
 
-
+# ??question: How can I get an internal object id from an IdMap
+# if I have an external id?
+# question??
+"""!!naswer IdMap class provides a convert_to_internal method which accepts
+a sequence of external ids and return an ndarray containing their internal ids. answer!!
+"""
 @attr.s(frozen=True, slots=True)
 class IdMap:
     """Mapping between external and internal object ids.
@@ -81,6 +86,10 @@ class IdMap:
         internal_ids_sorted = internal_ids[order]
 
         internals_incorrect = internal_ids_sorted != np.arange(internal_ids_sorted.size)
+        # ??question: Since internals_incorrect receive value of inequality comparison
+        # != with a numpy's ndarray, is it ever possible for internals_incorrect to be True?
+        # question??
+        """answer TODO"""
         if internals_incorrect is True or internals_incorrect.any():
             raise ValueError("Internal ids must be integers from 0 to n_objects-1")
 

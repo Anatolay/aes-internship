@@ -52,6 +52,11 @@ class ItemNet(nn.Module):
     def forward(self, item_features: torch.Tensor) -> torch.Tensor:
         emb = self.activation(self.embedding_layer(item_features))
         features = self.activation(self.dense_layer(emb))
+        # ??question: What is the purpose of summing outputs of
+        # the embedding_layer and dense_layer (emb and fetures respectively),
+        # before passing them to the output_layer?
+        # question??
+        """answer TODO"""
         x = emb + features
 
         output = self.output_layer(x)
@@ -79,6 +84,9 @@ class UserNet(nn.Module):
         interactions_emb = self.activation(self.embedding_interactions_layer(interactions))
         features_dense = self.activation(self.features_dense_layer(features_emb))
         features_x = features_emb + features_dense
+        # ??question: Why is interactions_emb not forwarded through the
+        # features_dense_layer, while features_emb is passed?
+        # question??
         concatenated_features = torch.cat((features_x, interactions_emb), 1)
 
         output = self.output_layer(concatenated_features)
@@ -245,6 +253,11 @@ class DSSMModel(VectorModel):
     def __init__(
         self,
         dataset_type: TorchDataset[tp.Any],
+        # ??question: according to the doc comment of DSSMModel class,
+        # the class should wrap a rectools.models.dssm.DSSM class,
+        # however in its __init__ function the DSSM model is Optional.
+        # Why is the model parameter allowed to be None?
+        # question??
         model: tp.Optional[DSSM] = None,
         max_epochs: int = 5,
         batch_size: int = 128,
@@ -309,6 +322,9 @@ class DSSMModel(VectorModel):
             self.trainer.fit(model=self.model, train_dataloaders=train_dataloader)
 
     def get_vectors(self, dataset: Dataset) -> tp.Tuple[np.ndarray, np.ndarray]:
+        # ??question: Why does get_vectors method not reuse the
+        # _check_is_fitted method of the parent ModelBase class?
+        # question??
         if not self.is_fitted:
             raise NotFittedError(self.__class__.__name__)
         user_factors = self._get_users_factors(dataset)

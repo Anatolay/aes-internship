@@ -339,6 +339,15 @@ class SparseFeatures:
         """
         required_columns = {id_col, feature_col, value_col}
         actual_columns = set(df.columns)
+        # ??question: Would changing condition of the if statement
+        # from not actual_columns >= required_columns to
+        # actual_columns < required_columns change the outcome?
+        # question??
+        """!!answer Yes, it could change the outcome. Comparison between sets checks for subsets.
+        Such comparisons are not exhaustive: if both actual_columns and required_columns have
+        elements which are not present in the other, then both actual_columns >= required_columns and
+        actual_columns < required_columns will return False. answer!!
+        """
         if not actual_columns >= required_columns:
             raise KeyError(f"Missed columns {required_columns - actual_columns}")
 
@@ -370,6 +379,11 @@ class SparseFeatures:
 
         return cls.from_iterables(csr, names_all)
 
+    # ??question: What is the difference between direct features from _make_direct_features
+    # and category features from _make_cat_feature?
+    # question??
+    """answer TODO
+    """
     @classmethod
     def _make_direct_features(
         cls,
@@ -393,6 +407,11 @@ class SparseFeatures:
             ),
             shape=(n_objects, len(features)),
         )
+        # ??question: Does numpy package provide a more efficient map function
+        # then python's list comprehension used to define names?
+        # question??
+        """!!answer No, numpy does not have a map function for ndarrays. answer!!
+        """
         names = [(feature, DIRECT_FEATURE_VALUE) for feature in features_map.get_external_sorted_by_internal()]
         return csr, names
 
@@ -424,6 +443,12 @@ class SparseFeatures:
         """Return values in sparse format."""
         return self.values
 
+    # ??question: Why is the return type taken into quotes
+    # -> "SparseFeatures" instead of simply -> SparseFeatures?
+    # question??
+    """!!answer take is a method of SparseFeatures class. Since the class is
+    not defined yet, writing it without quotes would result in an error. answer!!
+    """
     def take(self, ids: InternalIds) -> "SparseFeatures":
         """
         Take a subset of features for given subject (user or item) ids.

@@ -151,7 +151,13 @@ class PopularInCategoryModel(PopularModel):
         for num_col, (name, value) in enumerate(dataset.item_features.names):
             if name == self.category_feature and value != features.DIRECT_FEATURE_VALUE:
                 self.category_columns.append(num_col)
+        # ??question: Since self.category_columns is initialized with an empty list,
+        # shouldn't the condition if not self.category_columns always be false?
+        # question??
         if not self.category_columns:
+            # ??question: Why is ValueError raised with the claim that category_feature was not present,
+            # while the condition in the if statement is checking self.category_columns?
+            # question??
             raise ValueError("`category_feature` must be present in `cat_item_features` when creating Dataset")
 
     def _calc_category_scores(self, dataset: Dataset, interactions: pd.DataFrame) -> None:
@@ -159,6 +165,8 @@ class PopularInCategoryModel(PopularModel):
         for column_num in self.category_columns:
             item_idx = dataset.item_features.values.getcol(column_num).nonzero()[0]  # type: ignore
             self.category_interactions[column_num] = interactions[interactions[Columns.Item].isin(item_idx)].copy()
+            # ??question: In what case does self.category_interactions[column_num] end up empty?
+            # question??
             # Category interactions might be empty
             if self.category_interactions[column_num].shape[0] == 0:
                 self.category_columns.remove(column_num)

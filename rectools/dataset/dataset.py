@@ -56,6 +56,10 @@ class Dataset:
     user_id_map: IdMap = attr.ib()
     item_id_map: IdMap = attr.ib()
     interactions: Interactions = attr.ib()
+    # ??question: Why are user_features and item_features allowed to be None?
+    # question??
+    """!!answer Seveal recommendation models do not require either user_features or item_features. answer!!
+    """
     user_features: tp.Optional[Features] = attr.ib(default=None)
     item_features: tp.Optional[Features] = attr.ib(default=None)
 
@@ -139,6 +143,13 @@ class Dataset:
         possible_id_col: str,
         feature_type: str,
     ) -> tp.Optional[Features]:
+        # ??question: What is a benefit of checking df for being None
+        # inside of _make_features instead of performing the check beforehand
+        # and only passing the actual dataframe to the method?
+        # question??
+        """!!answer If _make_features is called several times with values that can be None,
+        then the benefit is that the check is performed in one place only, without code repetition. answer!!
+        """
         if df is None:
             return None
 
@@ -155,6 +166,12 @@ class Dataset:
                     "When using dense features all ids from interactions must present in features table"
                 )
             except Exception as e:  # pragma: no cover
+                # ??question: What is the !r syntax in string interpolation in
+                # RuntimeError(f"An error has occurred while constructing {feature_type} features: {e!r}")?
+                # question??
+                """!!answer !r stands for call to repr() function. e!r is equivalent to repr(e), a string
+                representation of e. answer!!
+                """
                 raise RuntimeError(f"An error has occurred while constructing {feature_type} features: {e!r}")
         try:
             return SparseFeatures.from_flatten(df, id_map, cat_features, id_col=id_col)
@@ -186,5 +203,13 @@ class Dataset:
             Resized user-item CSR matrix
         """
         matrix = self.interactions.get_user_item_matrix(include_weights)
+        # ??question: Wouldn't a call to self.user_id_map.size be equivalent to
+        # self.user_id_map.internal_ids.size since the number of internal and external
+        # ids should be equal in the mapping?
+        # question??
+        """!!answer According to documentation, self.user_id_map.size should return the number
+        of ids in IdMap. self.user_id_map.internal_ids.size is the number of ids in self.user_id_map.internal_ids.
+        The equivalence of these two depends on the implementation. At the moment, these two are equal. answer!!
+        """
         matrix.resize(self.user_id_map.internal_ids.size, self.item_id_map.internal_ids.size)
         return matrix

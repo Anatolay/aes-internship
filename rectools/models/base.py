@@ -70,6 +70,10 @@ class ModelBase:
         assume_external_ids: bool = True,
         return_external_ids: bool = True,
     ) -> pd.DataFrame:
+        # ??question: Why is the multiline comment of the recommend method
+        # uses raw python string, while multiline comments of other methods use ordinary strings?
+        # question??
+        """!!answer Raw strings are used to prevent escaping special characters. answer!!"""
         r"""
         Recommend items for users.
 
