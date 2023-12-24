@@ -98,6 +98,9 @@ class RandomSplitter(Splitter):
         if test_fold_frac * n_splits > 1:
             # ??question: What is the purpose of :.1% syntax used at test_fold_frac?
             # question??
+            """!!answer :. is used to set interpolation formatting in f-strings.
+            :.1% displays a decimal value as percentage with 1 decimal place. answer!!
+            """
             raise ValueError(f"Impossible to create {n_splits} non-overlapping folds {test_fold_frac:.1%} each")
 
         super().__init__(filter_cold_users, filter_cold_items, filter_already_seen)

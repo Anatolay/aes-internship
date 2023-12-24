@@ -26,6 +26,9 @@ class RequirementUnavailable:
         # instantiated to NotImplemented, for example when someone tries to instanciate the
         # RequirementUnavailable class?
         # question??
+        """!!answer in RequirementUnavailable class, requirement field is set to NotImplemented.
+        An attempt to interpolate {cls.requirement} will result in NonImplemented written to the string. answer!!
+        """
         raise ImportError(
             f"Requirement `{cls.requirement}` is not satisfied. Run `pip install rectools[{cls.requirement}]` "
             f"to install extra requirements before accessing {cls.__name__}."

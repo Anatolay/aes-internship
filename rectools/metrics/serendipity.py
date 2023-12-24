@@ -154,6 +154,9 @@ class Serendipity(MetricAtK):
         )
         # ??question: what is the purpose of the "_merge" column in recommendations_ dataframe?
         # question??
+        """!!answer According to pandas documentation, if indicator is set to True,
+        a column called "_merge" with information on the source of each row is added. answer!!
+        """
         recommendations_["is_relevant"] = np.where(recommendations_["_merge"] == "both", 1, 0)
 
         n_items = len(catalog)
@@ -330,9 +333,13 @@ def calc_serendipity_metrics(
         k_max = max(metric.k for metric in serendipity_metrics.values())
         # ??question: In Serendipity.fit, k_max is the upper bound on values taken into
         # account when calculating the metric. However, in calc_serendipity_metrics
-        # k_max is the maximum value of k among allmetrics. If the same value is
+        # k_max is the maximum value of k among all metrics. If the same value is
         # used for all serendipity metrics, shouldn't the minimal of metric.k be used?
         # question??
+        """!!answer k is used to indicate the number of top ranking items used during fit.
+        This code uses the maximum k_max to satisfy requirement for the largest k.
+        However, it could also be a mistake. answer!!
+        """
         fitted = Serendipity.fit(reco, interactions, prev_interactions, catalog, k_max)
         for name, metric in serendipity_metrics.items():
             results[name] = metric.calc_from_fitted(fitted)

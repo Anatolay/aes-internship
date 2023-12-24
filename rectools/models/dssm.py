@@ -56,6 +56,7 @@ class ItemNet(nn.Module):
         # the embedding_layer and dense_layer (emb and fetures respectively),
         # before passing them to the output_layer?
         # question??
+        """answer TODO"""
         x = emb + features
 
         output = self.output_layer(x)

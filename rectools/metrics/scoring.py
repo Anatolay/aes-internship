@@ -158,6 +158,7 @@ def calc_metrics(  # noqa  # pylint: disable=too-many-branches
     # ??question: Does length of results always correspond to the number
     # of non-custom metrics inthe metrics Dict?
     # question??
+    """answer TODO"""
     if len(results) < len(metrics):
         warnings.warn("Custom metrics are not supported.")
     return results

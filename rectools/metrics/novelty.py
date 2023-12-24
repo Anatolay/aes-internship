@@ -119,8 +119,10 @@ class MeanInvUserFreq(MetricAtK):
 
         recommendations_ = reco.loc[reco[Columns.Rank] <= k_max].copy()
         # ??question: Why is n_users_per_item, which is not a function, passed to
-        # the .map method recommendations_[Columns.Item]?
+        # the .map method of recommendations_[Columns.Item]?
         # question??
+        """!!answer recommendations_ is a DataFrame, hence recommendations_[Columns.Item] is a Series.
+        map method of Series may take a function, a subclass of collections.abc.Mapping or a Series. answer!!"""
         recommendations_["n_users_per_item"] = recommendations_[Columns.Item].map(n_users_per_item)
         # cold items are treated as if they were consumed by a single user
         recommendations_["n_users_per_item"] = recommendations_["n_users_per_item"].fillna(1)

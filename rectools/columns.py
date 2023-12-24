@@ -20,6 +20,9 @@ class Columns:
     # however the Columns class does not contain any name field,
     # what is the meaning of the comment?
     # question??
+    """!!answer Columns class represents an enumeration of fixed column names.
+    They are accessed, for example, as Column.User or Column.Score. answer!!
+    """
     """Fixed column names for tables that contain interactions and recommendations."""
 
     User = "user_id"

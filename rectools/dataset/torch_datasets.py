@@ -64,6 +64,7 @@ class DSSMDataset(TorchDataset[tp.Any]):
         # of the sum is false, but the text of the error states otherwise, is there
         # some kind of error?
         # question??
+        """answer TODO"""
         if not self.interactions.sum(1).all() or (self.interactions < 0).sum(1).any():
             raise ValueError(
                 "Impossible to sample from a row that either contains only negative items"
@@ -94,9 +95,13 @@ class DSSMDataset(TorchDataset[tp.Any]):
         probabilities = interactions_vec / interactions_vec.sum()
         # ??question: Why are random indeces (pos_i and neg_i) are used inside of __getitem__?
         # question??
+        """!!answer According to documentation, DSSMDataset is used for advanced sampling logic.
+        Random indices are used to generate samples. answer!!
+        """
         pos_i = np.random.choice(np.arange(self.interactions.shape[1]), p=probabilities)
         # ??question: What is meant by positivity and negativity in pos_i and neg_i?
         # question??
+        """answer TODO"""
         neg_i = np.random.choice(np.arange(self.interactions.shape[1]))
 
         user_features = torch.FloatTensor(self.users[idx].toarray().flatten())
